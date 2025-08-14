@@ -158,4 +158,4 @@ class Skill:
 
         skill_page.container.click_button_delete_entity(self.get_title())
         driver.refresh()
-        skill_page.container.validate_tr_entity_row_info(self.get_title(), False)
+        skill_page.container.validate_tr_entity_row_info(self.get_title(), exists=False)

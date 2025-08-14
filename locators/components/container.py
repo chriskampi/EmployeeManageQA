@@ -47,7 +47,7 @@ class Container:
         self.actions.find_and_click(path)
         time.sleep(1)
 
-    def validate_tr_entity_row_info(self, row, info, exists=True):
+    def validate_tr_entity_row_info(self, row, info=None, exists=True):
         """ Validate row entity info """
 
         path = f"{self.__path_tr_row_entity(row)}[contains(.,'{info}')]"
