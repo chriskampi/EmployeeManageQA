@@ -1,6 +1,7 @@
 import requests
 import conftest
 from conftest import load_config
+from functions import pages
 
 class Skill:
     def __init__(self, id=None, title=None):
@@ -138,3 +139,39 @@ class Skill:
             assert response_data['message'] == 'Skill deleted successfully'
             
         return response
+
+    # Page Object Functions for UI Testing
+    
+    def navigate_to_skills_page(self, driver):
+        """Navigate to skills page using page object"""
+        from functions.pages import navigate_to_skills_page
+        return navigate_to_skills_page(driver)
+    
+    def create_skill_via_ui(self, driver, title=None):
+        """Create skill via UI using page object and paths"""
+        skill_page = self.navigate_to_skills_page(driver)
+        
+        # Use provided title or fall back to object title
+        title = title or self.get_title()
+        
+        # Fill in skill form using page object paths
+        skill_page.set_text_input_skill_title(title)
+        
+        return skill_page
+    
+    def update_skill_via_ui(self, driver, new_title=None):
+        """Update skill via UI using page object and paths"""
+        skill_page = self.navigate_to_skills_page(driver)
+        
+        # Use provided title or fall back to object title
+        new_title = new_title or self.get_title()
+        
+        # Fill in skill form with new title using page object paths
+        skill_page.set_text_input_skill_title(new_title)
+        
+        return skill_page
+    
+    def get_skill_page_instance(self, driver):
+        """Get SkillPage instance for direct page object access"""
+        from functions.pages import navigate_to_skills_page
+        return navigate_to_skills_page(driver)

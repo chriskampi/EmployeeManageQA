@@ -2,6 +2,7 @@ import requests
 import json
 import conftest
 from conftest import load_config
+from functions import pages
 
 
 class Employee:
