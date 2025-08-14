@@ -1,11 +1,11 @@
 import pytest
-from data.skills import management
+from data.skills import logistics
 
 pytestmark = pytest.mark.api
 
 class TestUpdateSkillUnsuccessful:
     """ Test for all unsuccessful skill update scenarios"""
-    SKILL = management()
+    SKILL = logistics()
 
     def test_1_update_skill_missing_id_response(self):
         """ Test for unsuccessful skill update due to missing id"""
