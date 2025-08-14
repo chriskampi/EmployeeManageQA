@@ -1,7 +1,7 @@
 {
   "test_mode": "api",
-  "base_url": "https://example.com",
-  "api_base_url": "https://httpbin.org",
+  "base_url": "http://localhost:3000/",
+  "api_base_url": "http://localhost:3001/",
   "browser": "chrome",
   "headless": true,
   "implicit_wait_secs": 0,

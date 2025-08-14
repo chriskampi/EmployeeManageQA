@@ -1,11 +1,22 @@
+import requests
+import json
+import conftest
+from conftest import load_config
+
+
 class Employee:
-    def __init__(self, firstname=None, lastname=None, email=None, password=None):
+    def __init__(self, user_id=None, firstname=None, lastname=None, email=None, password=None):
+        self._user_id = user_id
         self._firstname = firstname
         self._lastname = lastname
         self._email = email
         self._password = password
+        self.base_url = load_config()["api_base_url"]
 
     # Setters
+    def set_user_id(self, user_id):
+        self._user_id = user_id
+
     def set_firstname(self, firstname):
         self._firstname = firstname
 
@@ -19,6 +30,9 @@ class Employee:
         self._password = password
 
     # Getters
+    def get_user_id(self):
+        return self._user_id
+
     def get_firstname(self):
         return self._firstname
 
@@ -30,3 +44,24 @@ class Employee:
 
     def get_password(self):
         return self._password
+
+    def login_user_via_api(self, expected_code=200, time=5, content=None):
+
+        url = (f"{self.base_url}/api/admin/login?"
+               f"email={self.get_email()}&"
+               f"password={self.get_password()}")
+        response = requests.get(url, timeout=time)
+        assert response.status_code == expected_code
+        if expected_code == 200:
+            expected_content = (b'{"success":true,'
+                                b'"message":"Login successful",'
+                                b'"data":{'
+                                b'"id":' + self.get_user_id() + b','
+                                b'"firstname":' + self.get_firstname() + b','
+                                b'"lastname":' + self.get_lastname() + b','
+                                b'"email":' + self.get_email() + b','
+                                b'}}')
+            assert expected_content in response.content
+        else:
+            assert response.content == content
+

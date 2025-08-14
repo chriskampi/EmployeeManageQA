@@ -12,7 +12,7 @@ def load_config(path: str | None = None) -> dict:
     if not cfg_path.exists():
         # Fallback to a basic config if the file doesn't exist
         return {
-            "api_base_url": "https://httpbin.org",
+            "api_base_url": "http://localhost:3001/",
             "test_mode": "api",
             "headless": True,
             "window_size": "1920,1080",
@@ -79,7 +79,7 @@ def config(request: pytest.FixtureRequest) -> dict:
         else:
             # Fallback UI config
             cfg = {
-                "api_base_url": "https://httpbin.org",
+                "api_base_url": "http://localhost:3000/",
                 "test_mode": "ui",
                 "headless": False,
                 "window_size": "1280,800",
