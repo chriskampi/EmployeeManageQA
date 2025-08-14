@@ -42,15 +42,54 @@ def pytest_addoption(parser: pytest.Parser) -> None:
     )
 
 # ----- Fixtures -----
-@pytest.fixture(scope="session")
+@pytest.fixture
 def config(request: pytest.FixtureRequest) -> dict:
     cfg_path = request.config.getoption("config_path")
-    cfg = load_config(cfg_path)
     
     # Get override mode from CLI or environment
     override_mode = request.config.getoption("override_mode") or os.environ.get("TEST_MODE")
+    
+    # Check for auto-detected mode from pytest_runtest_setup
+    auto_detected_mode = getattr(request.config.option, 'override_mode', None)
+    
+    # Determine which config file to load based on mode
     if override_mode:
-        cfg["test_mode"] = str(override_mode).lower()
+        mode = str(override_mode).lower()
+    elif auto_detected_mode:
+        mode = str(auto_detected_mode).lower()
+    else:
+        # Auto-detect mode based on test file location
+        test_file_path = str(request.node.fspath) if hasattr(request.node, 'fspath') else ""
+        normalized_path = test_file_path.replace('\\', '/')
+        
+        if "Tests/UI" in normalized_path:
+            mode = "ui"
+        elif "Tests/API" in normalized_path:
+            mode = "api"
+        else:
+            mode = "api"  # Default
+    
+    # Load the appropriate config file
+    if mode == "ui":
+        ui_config_path = Path(__file__).resolve().parent / "config" / "ui_test_configuration.json"
+        if ui_config_path.exists():
+            with ui_config_path.open("r", encoding="utf-8") as f:
+                cfg = json.load(f)
+            # Config loaded successfully
+        else:
+            # Fallback UI config
+            cfg = {
+                "api_base_url": "https://httpbin.org",
+                "test_mode": "ui",
+                "headless": False,
+                "window_size": "1280,800",
+                "implicit_wait_secs": 5,
+                "explicit_wait_secs": 10
+            }
+    else:
+        # API mode - use existing logic
+        cfg = load_config(cfg_path)
+        cfg["test_mode"] = mode
     
     return cfg
 
