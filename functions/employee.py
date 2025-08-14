@@ -155,7 +155,7 @@ class Employee:
         """
         Test the GET /getEmployees endpoint
         """
-        url = f"{self.base_url}/api/employee/getEmployees"
+        url = f"{self.base_url}/api/employees/getEmployees"
         params = {}
         if search:
             params['search'] = search
@@ -184,7 +184,7 @@ class Employee:
         """
         Test the POST /createEmployee endpoint
         """
-        url = f"{self.base_url}/api/employee/createEmployee"
+        url = f"{self.base_url}/api/employees/createEmployee"
         payload = {
             "firstname": self.get_firstname(),
             "lastname": self.get_lastname(),
@@ -214,7 +214,7 @@ class Employee:
         """
         Test the PUT /updateEmployee endpoint
         """
-        url = f"{self.base_url}/api/employee/updateEmployee"
+        url = f"{self.base_url}/api/employees/updateEmployee"
         payload = {
             "id": self.get_user_id(),
             "firstname": user_data.get('firstname'),
@@ -247,7 +247,7 @@ class Employee:
         """
         Test the DELETE /deleteEmployee endpoint
         """
-        url = f"{self.base_url}/api/employee/deleteEmployee"
+        url = f"{self.base_url}/api/employees/deleteEmployee"
         params = {"id": self.get_user_id()}
         
         response = requests.delete(url, params=params, timeout=time)
@@ -264,7 +264,7 @@ class Employee:
         """
         Test the POST /addSkill endpoint
         """
-        url = f"{self.base_url}/api/employee/addSkill"
+        url = f"{self.base_url}/api/employees/addSkill"
         payload = {
             "employee_id": self.get_user_id(),
             "skill_id": skill.get_id()
@@ -289,7 +289,7 @@ class Employee:
         """
         Test the DELETE /removeSkill endpoint
         """
-        url = f"{self.base_url}/api/employee/removeSkill"
+        url = f"{self.base_url}/api/employees/removeSkill"
         params = {
             "employee_id": self.get_user_id(),
             "skill_id": skill.get_id()

@@ -11,3 +11,7 @@ class TestCreateEmployeeSuccessful:
     def test_create_employee_successful(self):
         """ Test for successful employee creation """
         self.EMPLOYEE.create_employee_via_api()
+
+    def test_delete_employee_successful(self):
+        """ Test for successful employee deletion """
+        self.EMPLOYEE.delete_employee_via_api()

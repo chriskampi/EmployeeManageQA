@@ -13,3 +13,7 @@ class TestAddSkillSuccessful:
     def test_add_skill_successful(self):
         """ Test for successful skill addition to employee """
         self.EMPLOYEE.add_skill_via_api(self.SKILL)
+
+    def test_remove_skill_successful(self):
+        """ Test for successful skill removal from employee """
+        self.EMPLOYEE.remove_skill_via_api(self.SKILL)

@@ -36,6 +36,15 @@ def create_test_employee():
     employee = Employee()
     employee.set_firstname("Test")
     employee.set_lastname("Employee")
-    employee.set_email("test.employee@test.com")
+    employee.set_email("ckamp.test@test.com")
+
+    return employee
+
+def manager_lead_employee():
+
+    employee = Employee()
+    employee.set_firstname("Test")
+    employee.set_lastname("Employee")
+    employee.set_email("ckamp.test@test.com")
 
     return employee
