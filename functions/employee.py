@@ -151,9 +151,15 @@ class Employee:
             content = content.encode('utf-8')
             assert response.content == content
 
-    def get_employees_via_api(self, search=None, expected_code=200, time=1):
+    def get_employees_via_api(self, search=None, expected_code=200, time=1, expected_employees=None):
         """
         Test the GET /getEmployees endpoint
+        
+        Args:
+            search: Optional search term for filtering employees
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            expected_employees: List of expected employee dictionaries to validate against
         """
         url = f"{self.base_url}/api/employees/getEmployees"
         params = {}
@@ -170,6 +176,7 @@ class Employee:
             assert 'data' in response_data
             assert isinstance(response_data['data'], list)
             
+            # Validate each employee structure
             for employee in response_data['data']:
                 assert 'id' in employee
                 assert 'firstname' in employee
@@ -177,6 +184,39 @@ class Employee:
                 assert 'email' in employee
                 assert 'skills' in employee
                 assert isinstance(employee['skills'], list)
+                
+            # If expected_employees is provided, validate the response matches
+            if expected_employees is not None:
+                assert len(response_data['data']) == len(expected_employees), \
+                    f"Expected {len(expected_employees)} employees, got {len(response_data['data'])}"
+                
+                # Sort both lists by ID for consistent comparison
+                response_employees = sorted(response_data['data'], key=lambda x: x['id'])
+                expected_employees_sorted = sorted(expected_employees, key=lambda x: x['id'])
+                
+                for i, (response_emp, expected_emp) in enumerate(zip(response_employees, expected_employees_sorted)):
+                    assert response_emp['id'] == expected_emp['id'], \
+                        f"Employee {i}: Expected ID {expected_emp['id']}, got {response_emp['id']}"
+                    assert response_emp['firstname'] == expected_emp['firstname'], \
+                        f"Employee {i}: Expected firstname '{expected_emp['firstname']}', got '{response_emp['firstname']}'"
+                    assert response_emp['lastname'] == expected_emp['lastname'], \
+                        f"Employee {i}: Expected lastname '{expected_emp['lastname']}', got '{response_emp['lastname']}'"
+                    assert response_emp['email'] == expected_emp['email'], \
+                        f"Employee {i}: Expected email '{expected_emp['email']}', got '{response_emp['email']}'"
+                    
+                    # Validate skills
+                    assert len(response_emp['skills']) == len(expected_emp['skills']), \
+                        f"Employee {i}: Expected {len(expected_emp['skills'])} skills, got {len(response_emp['skills'])}"
+                    
+                    # Sort skills by ID for consistent comparison
+                    response_skills = sorted(response_emp['skills'], key=lambda x: x['id'])
+                    expected_skills = sorted(expected_emp['skills'], key=lambda x: x['id'])
+                    
+                    for j, (response_skill, expected_skill) in enumerate(zip(response_skills, expected_skills)):
+                        assert response_skill['id'] == expected_skill['id'], \
+                            f"Employee {i}, Skill {j}: Expected skill ID {expected_skill['id']}, got {response_skill['id']}"
+                        assert response_skill['title'] == expected_skill['title'], \
+                            f"Employee {i}, Skill {j}: Expected skill title '{expected_skill['title']}', got '{response_skill['title']}'"
                 
         return response
 
