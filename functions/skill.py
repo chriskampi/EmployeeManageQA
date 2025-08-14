@@ -150,22 +150,11 @@ class Skill:
         # Fill in skill form using page object paths
         skill_page.set_text_input_skill_title(self.get_title())
         skill_page.container.click_button_save_entity()
-        
-        return skill_page
-    
-    def update_skill_via_ui(self, driver, new_title=None):
-        """Update skill via UI using page object and paths"""
-        skill_page = self.navigate_to_skills_page(driver)
-        
-        # Use provided title or fall back to object title
-        new_title = new_title or self.get_title()
-        
-        # Fill in skill form with new title using page object paths
-        skill_page.set_text_input_skill_title(new_title)
-        
-        return skill_page
-    
-    def get_skill_page_instance(self, driver):
-        """Get SkillPage instance for direct page object access"""
-        from functions.pages import navigate_to_skills_page
-        return navigate_to_skills_page(driver)
+
+    def delete_skill_via_ui(self, driver):
+        """delete skill via UI using page object and paths"""
+        skill_page = pages.navigate_to_skills_page(driver)
+
+        skill_page.container.click_button_delete_entity(self.get_title())
+        # Fill in skill form using page object paths
+        driver.alert.accept()

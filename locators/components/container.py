@@ -36,6 +36,11 @@ class Container:
         path = f"{self.__path_tr_row_entity(row)}{self.__button_delete_entity}"
         self.actions.find_and_click(path)
 
+    def click_button_save_entity(self):
+        """ Click on delete entity button """
+        path = f"{self.__button_save_entity}"
+        self.actions.find_and_click(path)
+
     def validate_tr_entity_row_info(self, row, info):
         """ Validate row entity info """
 

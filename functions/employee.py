@@ -326,3 +326,11 @@ class Employee:
             
         return response
 
+    def login(self, driver):
+        """login to the application"""
+        login_page = pages.navigate_to_login_page(driver)
+
+        login_page.set_text_input_email(self.get_email())
+        login_page.set_text_input_password(self.get_password())
+        login_page.click_button_login()
+
