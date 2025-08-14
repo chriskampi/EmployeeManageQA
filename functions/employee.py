@@ -45,36 +45,30 @@ class Employee:
     def get_password(self):
         return self._password
 
-    def login_user_via_api(self, expected_code=200, time=5, content=None):
+    def login_user_via_api(self, expected_code=200, time=1, content=None):
 
         url = (f"{self.base_url}/api/admin/login?"
                f"email={self.get_email()}&"
                f"password={self.get_password()}")
         response = requests.get(url, timeout=time)
-        assert response.status_code == expected_code
+        if not expected_code:
+            assert response.status_code != 200
+        else:
+            assert response.status_code == expected_code
         if expected_code == 200:
-            # Convert user_id to string and build the expected content as a string first
-            user_id_str = str(self.get_user_id()) if self.get_user_id() else "1"
-            firstname_str = self.get_firstname() if self.get_firstname() else "Test"
-            lastname_str = self.get_lastname() if self.get_lastname() else "User"
-            email_str = self.get_email() if self.get_email() else "test@example.com"
-            
             expected_content = (f'{{"success":true,'
                                 f'"message":"Login successful",'
                                 f'"data":{{'
-                                f'"id":{user_id_str},'
-                                f'"firstname":"{firstname_str}",'
-                                f'"lastname":"{lastname_str}",'
-                                f'"email":"{email_str}"'
+                                f'"id":{str(self.get_user_id())},'
+                                f'"firstname":"{self.get_firstname()}",'
+                                f'"lastname":"{self.get_lastname()}",'
+                                f'"email":"{self.get_email()}"'
                                 f'}}}}')
             
             # Convert to bytes for comparison with response.content
             expected_content_bytes = expected_content.encode('utf-8')
             assert expected_content_bytes in response.content
-        else:
-            if content:
-                # Convert content to bytes if it's a string
-                if isinstance(content, str):
-                    content = content.encode('utf-8')
-                assert response.content == content
+        if content:
+            content = content.encode('utf-8')
+            assert response.content == content
 
