@@ -24,13 +24,19 @@ class SeleniumActions:
         Returns:
             WebElement if exists=True, bool if exists=False
         """
-        wait = WebDriverWait(self.driver, self.wait_seconds)
-        element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
-        
         if exists:
+            # Original behavior - wait for element and return it
+            wait = WebDriverWait(self.driver, self.wait_seconds)
+            element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
             return element
         else:
-            return True
+            # Just check if element exists without waiting
+            try:
+                wait = WebDriverWait(self.driver, 0)  # No wait
+                element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
+                return True
+            except:
+                return False
 
     def find_and_click(self, xpath: str) -> None:
         """After validating the existence of the xpath, click it"""
