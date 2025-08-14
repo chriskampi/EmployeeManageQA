@@ -43,8 +43,9 @@ def create_test_employee():
 def manager_lead_employee():
 
     employee = Employee()
-    employee.set_firstname("Test")
-    employee.set_lastname("Employee")
-    employee.set_email("ckamp.test@test.com")
+    employee.set_user_id(9)
+    employee.set_firstname("Manager")
+    employee.set_lastname("Lead")
+    employee.set_email("manager@test.com")
 
     return employee
