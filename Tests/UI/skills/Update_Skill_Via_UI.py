@@ -1,21 +1,24 @@
 import pytest
-from data.skills import create_test_skill_UI
+from data.skills import logistics
 from data.employees import admin
+import time
 
-class TestCreateSkillViaUI:
+class TestUpdateSkillViaUI:
     """UI tests for creating skills via the web interface"""
 
     admin = admin()
-    skill = create_test_skill_UI()
+    skill = logistics()
+    NEW_TITLE = f"Logistic_{time.time()}"
+    OLD_TITLE = skill.get_title()
     
     def test_1_create_skill_via_ui(self, driver):
         """Test creating a skill via the UI using page objects"""
         # Skip if not in UI mode
         self.admin.login(driver)
-        self.skill.create_skill_via_ui(driver)
+        self.skill.update_skill_via_ui(driver, self.NEW_TITLE)
 
     def test_2_create_skill_via_ui(self, driver):
         """Test creating a skill via the UI using page objects"""
         # Skip if not in UI mode
         self.admin.login(driver)
-        self.skill.delete_skill_via_ui(driver)
+        self.skill.update_skill_via_ui(driver, self.OLD_TITLE)

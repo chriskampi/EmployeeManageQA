@@ -159,3 +159,32 @@ class Skill:
         skill_page.container.click_button_delete_entity(self.get_title())
         driver.refresh()
         skill_page.container.validate_tr_entity_row_info(self.get_title(), exists=False)
+
+    def update_skill_via_ui(self, driver, new_title):
+        """update skill via UI using page object and paths"""
+        skill_page = pages.navigate_to_skills_page(driver)
+
+        skill_page.container.click_button_edit_entity(self.get_title())
+        skill_page.set_text_input_skill_title(new_title)
+        skill_page.container.click_button_save_entity()
+
+        self.set_title(new_title)
+
+    @staticmethod
+    def validate_skills_list(driver, expected_skills, search=None):
+        """Validate skills list using page object and paths"""
+
+        skills_list = [skill.get_title() for skill in expected_skills]
+
+        skill_page = pages.navigate_to_skills_page(driver)
+        if search:
+            skill_page.container.set_text_input_search(search)
+        time.sleep(2)
+        
+        # For "Wrong" search, expect no results
+        if search and search.lower() == "wrong":
+            no_results = skill_page.container.validate_no_entity_rows()
+            assert no_results, f"Search for '{search}' should return no results"
+        else:
+            # For other searches, validate the expected skills are found
+            skill_page.container.validate_tr_entity_row_list(skills_list)

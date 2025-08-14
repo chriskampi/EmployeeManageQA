@@ -50,7 +50,16 @@ class SeleniumActions:
         element.send_keys(text)
 
     def validate_list(self, xpath: str, *expected_items) -> bool:
-        """Validate the list of elements in the same xpath and check the count matches"""
+        """
+        Validate the list of elements in the same xpath and check the count matches
+        
+        Args:
+            xpath: The XPath to find elements
+            *expected_items: Variable number of expected text items to find
+            
+        Returns:
+            bool: True if all expected items are found, False otherwise
+        """
         # Find all elements with the xpath
         elements = self.driver.find_elements(By.XPATH, xpath)
         
@@ -60,7 +69,21 @@ class SeleniumActions:
         
         # Validate each element contains the expected text
         for element, expected_item in zip(elements, expected_items):
-            if expected_item not in element.text:
+            # Convert expected_item to string for comparison
+            if str(expected_item) not in element.text:
                 return False
         
         return True
+
+    def validate_no_results(self, xpath: str) -> bool:
+        """
+        Validate that no elements are found for the given xpath
+        
+        Args:
+            xpath: The XPath to check
+            
+        Returns:
+            bool: True if no elements found, False if elements exist
+        """
+        elements = self.driver.find_elements(By.XPATH, xpath)
+        return len(elements) == 0

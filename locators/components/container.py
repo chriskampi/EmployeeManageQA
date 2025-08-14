@@ -54,8 +54,13 @@ class Container:
         assert self.actions.find(path, exists) == exists
 
     def validate_tr_entity_row_list(self, rows):
+        """Validate that the entity row list contains the expected rows"""
+        # Use the basic validate_list method
+        self.actions.validate_list(f"{self.__path_tr_row_entity('')}", *rows)
 
-        self.actions.validate_list(f"{self.__path_tr_row_entity('')}]", rows)
+    def validate_no_entity_rows(self):
+        """Validate that no entity rows are found"""
+        return self.actions.validate_no_results(self.__tr_entity)
 
     def set_text_input_search(self, term):
         """ Path to input search """
