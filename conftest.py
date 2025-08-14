@@ -65,6 +65,8 @@ def driver(config: dict, is_ui: bool):
     # Lazy import so API-only runs don't require selenium
     from selenium import webdriver
     from selenium.webdriver.chrome.options import Options
+    from selenium.webdriver.chrome.service import Service
+    import os
 
     options = Options()
     if config.get("headless", True):
@@ -79,7 +81,25 @@ def driver(config: dict, is_ui: bool):
     if size:
         options.add_argument(f"--window-size={size}")
 
-    drv = webdriver.Chrome(options=options)  # Selenium Manager resolves the driver
+    # Try to find ChromeDriver in common locations
+    chromedriver_paths = [
+        os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Programs', 'Python', 'Python313', 'chromedriver.exe'),
+        os.path.join(os.environ.get('PROGRAMFILES', ''), 'Google', 'Chrome', 'Application', 'chromedriver.exe'),
+        'chromedriver.exe'  # Fallback to PATH
+    ]
+    
+    chromedriver_path = None
+    for path in chromedriver_paths:
+        if os.path.exists(path):
+            chromedriver_path = path
+            break
+    
+    if chromedriver_path:
+        service = Service(executable_path=chromedriver_path)
+        drv = webdriver.Chrome(service=service, options=options)
+    else:
+        # Fallback to Selenium Manager if ChromeDriver not found
+        drv = webdriver.Chrome(options=options)
     imp_wait = int(config.get("implicit_wait_secs", 0))
     if imp_wait:
         drv.implicitly_wait(imp_wait)
