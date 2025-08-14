@@ -190,33 +190,44 @@ class Employee:
                 assert len(response_data['data']) == len(expected_employees), \
                     f"Expected {len(expected_employees)} employees, got {len(response_data['data'])}"
                 
-                # Sort both lists by ID for consistent comparison
-                response_employees = sorted(response_data['data'], key=lambda x: x['id'])
-                expected_employees_sorted = sorted(expected_employees, key=lambda x: x['id'])
-                
-                for i, (response_emp, expected_emp) in enumerate(zip(response_employees, expected_employees_sorted)):
-                    assert response_emp['id'] == expected_emp['id'], \
-                        f"Employee {i}: Expected ID {expected_emp['id']}, got {response_emp['id']}"
-                    assert response_emp['firstname'] == expected_emp['firstname'], \
-                        f"Employee {i}: Expected firstname '{expected_emp['firstname']}', got '{response_emp['firstname']}'"
-                    assert response_emp['lastname'] == expected_emp['lastname'], \
-                        f"Employee {i}: Expected lastname '{expected_emp['lastname']}', got '{response_emp['lastname']}'"
-                    assert response_emp['email'] == expected_emp['email'], \
-                        f"Employee {i}: Expected email '{expected_emp['email']}', got '{response_emp['email']}'"
+                # Validate each employee without sorting
+                for i, expected_emp in enumerate(expected_employees):
+                    # Find matching employee in response by ID
+                    matching_emp = None
+                    for resp_emp in response_data['data']:
+                        if resp_emp['id'] == expected_emp['id']:
+                            matching_emp = resp_emp
+                            break
+                    
+                    assert matching_emp is not None, \
+                        f"Expected employee with ID {expected_emp['id']} not found in response"
+                    
+                    # Validate employee data
+                    assert matching_emp['firstname'] == expected_emp['firstname'], \
+                        f"Employee {i}: Expected firstname '{expected_emp['firstname']}', got '{matching_emp['firstname']}'"
+                    assert matching_emp['lastname'] == expected_emp['lastname'], \
+                        f"Employee {i}: Expected lastname '{expected_emp['lastname']}', got '{matching_emp['lastname']}'"
+                    assert matching_emp['email'] == expected_emp['email'], \
+                        f"Employee {i}: Expected email '{expected_emp['email']}', got '{matching_emp['email']}'"
                     
                     # Validate skills
-                    assert len(response_emp['skills']) == len(expected_emp['skills']), \
-                        f"Employee {i}: Expected {len(expected_emp['skills'])} skills, got {len(response_emp['skills'])}"
+                    assert len(matching_emp['skills']) == len(expected_emp['skills']), \
+                        f"Employee {i}: Expected {len(expected_emp['skills'])} skills, got {len(matching_emp['skills'])}"
                     
-                    # Sort skills by ID for consistent comparison
-                    response_skills = sorted(response_emp['skills'], key=lambda x: x['id'])
-                    expected_skills = sorted(expected_emp['skills'], key=lambda x: x['id'])
-                    
-                    for j, (response_skill, expected_skill) in enumerate(zip(response_skills, expected_skills)):
-                        assert response_skill['id'] == expected_skill['id'], \
-                            f"Employee {i}, Skill {j}: Expected skill ID {expected_skill['id']}, got {response_skill['id']}"
-                        assert response_skill['title'] == expected_skill['title'], \
-                            f"Employee {i}, Skill {j}: Expected skill title '{expected_skill['title']}', got '{response_skill['title']}'"
+                    # Validate skills without sorting
+                    for j, expected_skill in enumerate(expected_emp['skills']):
+                        # Find matching skill in response by ID
+                        matching_skill = None
+                        for resp_skill in matching_emp['skills']:
+                            if resp_skill['id'] == expected_skill['id']:
+                                matching_skill = resp_skill
+                                break
+                        
+                        assert matching_skill is not None, \
+                            f"Employee {i}: Expected skill with ID {expected_skill['id']} not found in response"
+                        
+                        assert matching_skill['title'] == expected_skill['title'], \
+                            f"Employee {i}, Skill {j}: Expected skill title '{expected_skill['title']}', got '{matching_skill['title']}'"
                 
         return response
 
