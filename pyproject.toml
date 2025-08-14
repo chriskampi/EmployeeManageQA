@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "EmployeeManageQA"
+version = "0.1.0"
+description = "Employee Management QA Testing Framework"
+requires-python = ">=3.8"
+
+[tool.pytest.ini_options]
+testpaths = ["Tests"]
+python_files = ["test_*.py", "*_tests.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = ["-v", "--tb=short"]
+markers = [
+    "api: mark test as API test",
+    "ui: mark test as UI test"
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning"
+]

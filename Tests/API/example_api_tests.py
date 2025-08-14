@@ -12,7 +12,7 @@ class TestAPIExamples:
         response = requests.get(f"{api_url}/status/200")
         
         assert response.status_code == 200
-        assert response.json()["status_code"] == 200
+        # The /status/200 endpoint doesn't return JSON, just a 200 status
     
     @pytest.mark.api
     def test_api_get_request(self, config: Dict[str, Any]):
