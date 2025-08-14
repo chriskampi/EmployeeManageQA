@@ -21,12 +21,12 @@ class TestGetSkillsSuccessful:
                 'title': accountability_skill.get_title()
             },
             {
-                'id': management_skill.get_id(),
-                'title': management_skill.get_title()
-            },
-            {
                 'id': logistics_skill.get_id(),
                 'title': logistics_skill.get_title()
+            },
+            {
+                'id': management_skill.get_id(),
+                'title': management_skill.get_title()
             }
         ]
         self.SKILL.get_skills_via_api(expected_skills=expected_skills)
