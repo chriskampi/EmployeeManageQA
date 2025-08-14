@@ -1,4 +1,4 @@
-from functions.ui.skill import Skill
+from functions.skill import Skill
 
 def accountability():
 

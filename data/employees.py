@@ -1,4 +1,4 @@
-from functions.ui.employee import Employee
+from functions.employee import Employee
 
 def qa_tester():
 
