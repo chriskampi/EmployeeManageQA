@@ -15,3 +15,11 @@ def management():
     skill.set_title("Management")
 
     return skill
+
+def logistics():
+
+    skill = Skill()
+    skill.set_id(8)
+    skill.set_title("Logistics")
+
+    return skill

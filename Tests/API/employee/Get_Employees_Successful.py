@@ -36,7 +36,8 @@ class TestGetEmployeesSuccessful:
                 'firstname': manager_obj.get_firstname(),
                 'id': manager_obj.get_user_id(),
                 'lastname': manager_obj.get_lastname(),
-                'skills': [{'id': accountability().get_id(), 'title': accountability().get_title()}]
+                'skills': [{'id': management().get_id(), 'title': management().get_title()},
+                           {'id': accountability().get_id(), 'title': accountability().get_title()}]
             }
         ]
         self.EMPLOYEE.get_employees_via_api(expected_employees=expected_employees)
@@ -117,7 +118,7 @@ class TestGetEmployeesSuccessful:
         # Note: Based on actual API response, Manager Lead only has Accountability skill
         # This test should return no results for Management skill search
         expected_employees = []
-        self.EMPLOYEE.get_employees_via_api(search="Management", expected_employees=expected_employees)
+        self.EMPLOYEE.get_employees_via_api(search="Logistics", expected_employees=expected_employees)
 
     def test_7_get_employees_search_wrong_term_no_data(self):
         """ Test for successful employee retrieval with wrong search term showing no data """
