@@ -1,9 +1,15 @@
 from config.selenium_action_utils import SeleniumActions
+from conftest import load_config
+from locators.components.employee_skill_modal import skillModal
+from locators.components.container import Container
 
-class EmployeePage:
+class EmployeePage():
     def __init__(self, driver):
         self.driver = driver
         self.actions = SeleniumActions(driver)
+        self.url = f"{load_config()['api_base_url']}/employees"
+        self.container = Container(self.driver)
+        self.skill_modal = skillModal(self.driver)
 
     __button_add_skill = f"//button[contains(@class,'green')][contains(.,'Add Skill')]"
     __button_delete_skill = f"//button[contains(@class,'orange')][contains(.,'Remove Skill')]"
