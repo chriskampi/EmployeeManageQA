@@ -22,20 +22,20 @@ class skillModal:
     def click_option_skill(self, option):
         """ Click on skill from dropdown """
         path_1 = f"{self.__select_skill}"
-        self.actions.click(path_1)
+        self.actions.find_and_click(path_1)
         path_2 = self.__path_option_skill(option)
-        self.actions.click(path_2)
+        self.actions.find_and_click(path_2)
 
     def click_add_skill(self):
         """ Click on add skill button """
         path = self.path_button_action_skill("Add")
-        self.actions.click(path)
+        self.actions.find_and_click(path)
 
     def click_remove_skill(self):
         """ Click on remove skill button """
         path = self.path_button_action_skill("Remove")
-        self.actions.click(path)
+        self.actions.find_and_click(path)
 
     def validate_option_skills(self, skills):
 
-        self.actions.wait_visible(self.__path_option_skill(skills))
+        self.actions.validate_list(self.__path_option_skill(''), skills)

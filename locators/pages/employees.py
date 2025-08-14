@@ -14,26 +14,26 @@ class EmployeePage:
     def click_button_add_skill(self):
         """ Click on add skill button """
         path = self.__button_add_skill
-        self.actions.click(path)
+        self.actions.find_and_click(path)
 
     def click_button_delete_skill(self):
         """ Click on remove skill button """
         path = self.__button_delete_skill
-        self.actions.click(path)
+        self.actions.find_and_click(path)
 
     def set_text_input_firstname(self, firstname):
         """ set firstname input """
         path = self.__input_firstname
-        self.actions.type(path, firstname)
+        self.actions.find_and_type(path, firstname)
 
     def set_text_input_lastname(self, lastname):
         """ set lastname input """
         path = self.__input_lastname
-        self.actions.type(path, lastname)
+        self.actions.find_and_type(path, lastname)
 
     def set_text_input_email(self, email):
         """ set email input """
         path = self.__input_email
-        self.actions.type(path, email)
+        self.actions.find_and_type(path, email)
     
 

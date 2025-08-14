@@ -24,29 +24,31 @@ class Container:
     def click_button_add_entity(self):
         """ Click on add entity button """
         path = self.__button_add_entity
-        self.actions.click(path)
+        self.actions.find_and_click(path)
 
     def click_button_edit_entity(self, row):
         """ Click on edit entity button """
         path = f"{self.__path_tr_row_entity(row)}{self.__button_edit_entity}"
-        self.actions.click(path)
+        self.actions.find_and_click(path)
 
     def click_button_delete_entity(self, row):
         """ Click on delete entity button """
         path = f"{self.__path_tr_row_entity(row)}{self.__button_delete_entity}"
-        self.actions.click(path)
+        self.actions.find_and_click(path)
 
     def validate_tr_entity_row_info(self, row, info):
+        """ Validate row entity info """
 
-        self.actions.wait_visible(f"{self.__path_tr_row_entity(row)}[contains(.,'{info}')]")
+        path = f"{self.__path_tr_row_entity(row)}[contains(.,'{info}')]"
+        self.actions.find(path)
 
     def validate_tr_entity_row_list(self, rows):
 
-        self.actions.wait_visible(f"{self.__path_tr_row_entity(rows)}]")
+        self.actions.validate_list(f"{self.__path_tr_row_entity('')}]", rows)
 
     def set_text_input_search(self, term):
         """ Path to input search """
         path = self.__input_search
-        self.actions.type(path, term)
+        self.actions.find_and_type(path, term)
 
 

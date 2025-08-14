@@ -11,4 +11,4 @@ class SkillPage:
     def set_text_input_skill_title(self, skill_title):
         """ set skill title input """
         path = self.__input_skill_title
-        self.actions.type(path, skill_title)
+        self.actions.find_and_type(path, skill_title)

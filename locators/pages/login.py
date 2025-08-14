@@ -12,14 +12,14 @@ class LoginPage:
     def set_text_input_email(self, email):
         """ set email input """
         path = self.__input_email
-        self.actions.type(path, email)
+        self.actions.find_and_type(path, email)
 
     def set_text_input_password(self, password):
         """ set password input """
         path = self.__input_password
-        self.actions.type(path, password)
+        self.actions.find_and_type(path, password)
 
     def click_button_login(self):
         """ Click on login button """
         path = self.__button_login
-        self.actions.click(path)
+        self.actions.find_and_click(path)
