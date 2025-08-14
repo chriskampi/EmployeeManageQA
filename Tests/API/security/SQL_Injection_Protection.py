@@ -10,6 +10,7 @@ class TestSQLInjectionProtection:
     # SQL injection payload to test
     SQL_INJECTION_PAYLOAD = "INSERT INTO `employee_manage`.`skills` \
      (`id`, `title`) VALUES ('2', 'New')"
+    SKILL = accountability()
     
     def test_1_login_sql_injection_protection(self):
         """ Test login endpoint for SQL injection protection """
@@ -220,3 +221,26 @@ class TestSQLInjectionProtection:
         # Test in search parameters
         employee.get_employees_via_api(search=boundary_payload, expected_code=400)
         skill.get_skills_via_api(search=boundary_payload, expected_code=400)
+
+    def test_16_get_skills_successful(self):
+        """ Test for successful skill retrieval without search """
+        # Expected all skills - retrieve from data files
+        accountability_skill = accountability()
+        management_skill = management()
+        logistics_skill = logistics()
+
+        expected_skills = [
+            {
+                'id': accountability_skill.get_id(),
+                'title': accountability_skill.get_title()
+            },
+            {
+                'id': logistics_skill.get_id(),
+                'title': logistics_skill.get_title()
+            },
+            {
+                'id': management_skill.get_id(),
+                'title': management_skill.get_title()
+            }
+        ]
+        self.SKILL.get_skills_via_api(expected_skills=expected_skills)
