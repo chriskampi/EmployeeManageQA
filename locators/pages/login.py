@@ -27,3 +27,8 @@ class LoginPage:
         """ Click on login button """
         path = self.__button_login
         self.actions.find_and_click(path)
+
+    def validate_div_error(self):
+        """ Click on login button """
+        path = "//div[contains(.,'Request failed with status code 500')]"
+        self.actions.find(path)

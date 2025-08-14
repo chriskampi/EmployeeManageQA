@@ -326,6 +326,32 @@ class Employee:
             
         return response
 
+    def navigate_to_skills_tab(self, driver):
+        """Navigate to employees tab and verify URL"""
+        skill_page = pages.navigate_to_employees_page(driver)
+
+        skill_page.header.click_button_skill_tab()
+
+        # Get the expected URL from EmployeePage
+        from locators.pages.skills import SkillPage
+        expected_url = SkillPage(driver).url
+
+        # Assert current URL matches expected URL
+        assert driver.current_url == expected_url, f"Expected URL: {expected_url}, Got: {driver.current_url}"
+
+    def navigate_to_login(self, driver):
+        """Navigate to employees tab and verify URL"""
+        skill_page = pages.navigate_to_employees_page(driver)
+
+        skill_page.header.click_button_logout()
+
+        # Get the expected URL from EmployeePage
+        from locators.pages.login import LoginPage
+        expected_url = LoginPage(driver).url
+
+        # Assert current URL matches expected URL
+        assert driver.current_url == expected_url, f"Expected URL: {expected_url}, Got: {driver.current_url}"
+
     def login(self, driver):
         """login to the application"""
         login_page = pages.navigate_to_login_page(driver)
@@ -334,3 +360,11 @@ class Employee:
         login_page.set_text_input_password(self.get_password())
         login_page.click_button_login()
 
+    def login_fail_attempt(self, driver):
+        """login to the application"""
+        login_page = pages.navigate_to_login_page(driver)
+
+        login_page.set_text_input_email(self.get_email())
+        login_page.set_text_input_password(self.get_password())
+        login_page.click_button_login()
+        login_page.validate_div_error()

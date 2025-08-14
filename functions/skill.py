@@ -143,6 +143,19 @@ class Skill:
 
     # Page Object Functions for UI Testing
 
+    def navigate_to_employees_tab(self, driver):
+        """Navigate to employees tab and verify URL"""
+        skill_page = pages.navigate_to_skills_page(driver)
+
+        skill_page.header.click_button_employee_tab()
+
+        # Get the expected URL from EmployeePage
+        from locators.pages.employees import EmployeePage
+        expected_url = EmployeePage(driver).url
+
+        # Assert current URL matches expected URL
+        assert driver.current_url == expected_url, f"Expected URL: {expected_url}, Got: {driver.current_url}"
+
     def create_skill_via_ui(self, driver):
         """Create skill via UI using page object and paths"""
         skill_page = pages.navigate_to_skills_page(driver)
@@ -150,6 +163,13 @@ class Skill:
         skill_page.container.click_button_add_entity()
         # Fill in skill form using page object paths
         skill_page.set_text_input_skill_title(self.get_title())
+        skill_page.container.click_button_save_entity()
+
+    def create_skill_empty_error(self, driver):
+        """Create skill via UI using page object and paths"""
+        skill_page = pages.navigate_to_skills_page(driver)
+
+        skill_page.container.click_button_add_entity()
         skill_page.container.click_button_save_entity()
 
     def delete_skill_via_ui(self, driver):
