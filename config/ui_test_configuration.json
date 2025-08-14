@@ -1,0 +1,10 @@
+{
+  "test_mode": "ui",
+  "base_url": "https://httpbin.org",
+  "api_base_url": "https://httpbin.org",
+  "browser": "chrome",
+  "headless": false,
+  "implicit_wait_secs": 5,
+  "explicit_wait_secs": 10,
+  "window_size": "1280,800"
+}
