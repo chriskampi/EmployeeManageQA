@@ -368,3 +368,78 @@ class Employee:
         login_page.set_text_input_password(self.get_password())
         login_page.click_button_login()
         login_page.validate_div_error()
+
+    # Page Object Functions for UI Testing
+
+    def create_employee_via_ui(self, driver):
+        """Create employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+        
+        employee_page.container.click_button_add_entity()
+        # Fill in employee form using page object paths
+        employee_page.set_text_input_firstname(self.get_firstname())
+        employee_page.set_text_input_lastname(self.get_lastname())
+        employee_page.set_text_input_email(self.get_email())
+        employee_page.container.click_button_save_entity()
+
+    def create_employee_empty_error(self, driver):
+        """Create employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+
+        employee_page.container.click_button_add_entity()
+        employee_page.container.click_button_save_entity()
+
+    def delete_employee_via_ui(self, driver):
+        """Delete employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+
+        employee_page.container.click_button_delete_entity(f"{self.get_firstname()} {self.get_lastname()}")
+        driver.refresh()
+        employee_page.container.validate_tr_entity_row_info(f"{self.get_firstname()} {self.get_lastname()}", exists=False)
+
+    def update_employee_via_ui(self, driver, new_firstname):
+        """Update employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+
+        employee_page.container.click_button_edit_entity(f"{self.get_firstname()} {self.get_lastname()}")
+        employee_page.set_text_input_firstname(new_firstname)
+        employee_page.container.click_button_save_entity()
+
+        self.set_firstname(new_firstname)
+
+    @staticmethod
+    def validate_employees_list(driver, expected_employees, search=None):
+        """Validate employees list using page object and paths"""
+
+        employees_list = [f"{employee.get_firstname()} {employee.get_lastname()}" for employee in expected_employees]
+
+        employee_page = pages.navigate_to_employees_page(driver)
+        if search:
+            employee_page.container.set_text_input_search(search)
+        import time
+        time.sleep(2)
+        
+        # For "Wrong" search, expect no results
+        if not expected_employees:
+            employee_page.container.validate_no_entity_rows()
+        else:
+            # For other searches, validate the expected employees are found
+            employee_page.container.validate_tr_entity_row_list(employees_list)
+
+    def add_skill_to_employee_via_ui(self, driver, skill):
+        """Add skill to employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+
+        employee_page.container.click_button_edit_entity(f"{self.get_firstname()} {self.get_lastname()}")
+        employee_page.skill_modal.click_add_skill()
+        # Select the skill from the modal
+        employee_page.skill_modal.click_option_skill(skill.get_title())
+        employee_page.container.click_button_save_entity()
+
+    def remove_skill_from_employee_via_ui(self, driver, skill):
+        """Remove skill from employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+
+        employee_page.container.click_button_edit_entity(f"{self.get_firstname()} {self.get_lastname()}")
+        employee_page.skill_modal.click_remove_skill()
+        employee_page.container.click_button_save_entity()
