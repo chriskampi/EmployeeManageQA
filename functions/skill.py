@@ -156,5 +156,8 @@ class Skill:
         skill_page = pages.navigate_to_skills_page(driver)
 
         skill_page.container.click_button_delete_entity(self.get_title())
-        # Fill in skill form using page object paths
-        driver.alert.accept()
+        # Handle the confirmation alert
+        alert = driver.switch_to.alert
+        alert.accept()
+        
+        return skill_page
