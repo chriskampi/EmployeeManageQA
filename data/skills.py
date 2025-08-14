@@ -23,3 +23,10 @@ def logistics():
     skill.set_title("Logistics")
 
     return skill
+
+def create_test_skill():
+
+    skill = Skill()
+    skill.set_title("Test Skill")
+
+    return skill
