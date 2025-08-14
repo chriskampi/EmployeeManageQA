@@ -15,7 +15,7 @@ class Header:
         return path
 
     def __path_button_navigate_employee(self):
-        """ Navigate to skill page """
+        """ Navigate to employee page """
 
         path = f"{self.__path_button_navigate('Employee')}"
         return path

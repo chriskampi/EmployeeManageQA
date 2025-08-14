@@ -1,6 +1,6 @@
 from config.selenium_action_utils import SeleniumActions
 from conftest import load_config
-from locators.components.employee_skill_modal import skillModal
+from locators.components.employee_skill_modal import SkillModal
 from locators.components.container import Container
 from locators.components.header import Header
 
@@ -12,7 +12,7 @@ class EmployeePage:
         config = load_config()
         self.url = f"{config.get('base_url', config['api_base_url'])}employees"
         self.container = Container(self.driver)
-        self.skill_modal = skillModal(self.driver)
+        self.skill_modal = SkillModal(self.driver)
         self.header = Header(self.driver)
 
     __button_add_skill = f"//button[contains(@class,'green')][contains(.,'Add Skill')]"

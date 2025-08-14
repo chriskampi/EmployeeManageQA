@@ -2,14 +2,14 @@ import pytest
 from functions.skill import Skill
 from data.employees import admin
 
-class TestCreateSkillViaUI:
-    """UI tests for creating skills via the web interface"""
+class TestNavigateToEmployeesTab:
+    """UI tests for navigating to the employees tab"""
 
     admin = admin()
     skill = Skill()
     
-    def test_1_create_skill_via_ui(self, driver):
-        """Test creating a skill via the UI using page objects"""
+    def test_1_navigate_to_employees_tab(self, driver):
+        """Test navigating to the employees tab via the UI"""
         # Skip if not in UI mode
         self.admin.login(driver)
         self.skill.navigate_to_employees_tab(driver)

@@ -12,16 +12,40 @@ class Skill:
 
     # Setters
     def set_id(self, id):
+        """
+        Set the skill ID.
+        
+        Args:
+            id: Unique identifier for the skill
+        """
         self._id = id
 
     def set_title(self, title):
+        """
+        Set the skill title.
+        
+        Args:
+            title: The title/name of the skill
+        """
         self._title = title
 
     # Getters
     def get_id(self):
+        """
+        Get the skill ID.
+        
+        Returns:
+            The unique identifier for the skill
+        """
         return self._id
 
     def get_title(self):
+        """
+        Get the skill title.
+        
+        Returns:
+            The title/name of the skill
+        """
         return self._title
 
     def get_skills_via_api(self, search=None, expected_code=200, time=1, expected_skills=None):
@@ -72,6 +96,13 @@ class Skill:
     def create_skill_via_api(self, expected_code=200, time=1):
         """
         Test the POST /createSkill endpoint
+        
+        Args:
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/skills/createSkill"
         payload = {
@@ -99,6 +130,14 @@ class Skill:
     def update_skill_via_api(self, skill_data, expected_code=200, time=1):
         """
         Test the PUT /updateSkill endpoint
+        
+        Args:
+            skill_data: Dictionary containing the updated skill data
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/skills/updateSkill"
         payload = {
@@ -127,6 +166,13 @@ class Skill:
     def delete_skill_via_api(self, expected_code=200, time=1):
         """
         Test the DELETE /deleteSkill endpoint
+        
+        Args:
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/skills/deleteSkill"
         params = {"id": self.get_id()}
@@ -157,7 +203,12 @@ class Skill:
         assert driver.current_url == expected_url, f"Expected URL: {expected_url}, Got: {driver.current_url}"
 
     def create_skill_via_ui(self, driver):
-        """Create skill via UI using page object and paths"""
+        """
+        Create skill via UI using page object and paths
+        
+        Args:
+            driver: Selenium WebDriver instance
+        """
         skill_page = pages.navigate_to_skills_page(driver)
         
         skill_page.container.click_button_add_entity()
@@ -166,7 +217,12 @@ class Skill:
         skill_page.container.click_button_save_entity()
 
     def delete_skill_via_ui(self, driver):
-        """delete skill via UI using page object and paths"""
+        """
+        Delete skill via UI using page object and paths
+        
+        Args:
+            driver: Selenium WebDriver instance
+        """
         skill_page = pages.navigate_to_skills_page(driver)
 
         skill_page.container.click_button_delete_entity(self.get_title())
@@ -174,7 +230,13 @@ class Skill:
         skill_page.container.validate_tr_entity_row_info(self.get_title(), exists=False)
 
     def update_skill_via_ui(self, driver, new_title):
-        """update skill via UI using page object and paths"""
+        """
+        Update skill via UI using page object and paths
+        
+        Args:
+            driver: Selenium WebDriver instance
+            new_title: New title for the skill
+        """
         skill_page = pages.navigate_to_skills_page(driver)
 
         skill_page.container.click_button_edit_entity(self.get_title())

@@ -42,7 +42,7 @@ class Container:
         time.sleep(1)
 
     def click_button_save_entity(self):
-        """ Click on delete entity button """
+        """ Click on save entity button """
         path = f"{self.__button_save_entity}"
         self.actions.find_and_click(path)
         time.sleep(1)

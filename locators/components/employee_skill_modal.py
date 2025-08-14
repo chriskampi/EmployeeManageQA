@@ -1,7 +1,7 @@
 from config.selenium_action_utils import SeleniumActions
 from time import sleep
 
-class skillModal:
+class SkillModal:
     def __init__(self, driver):
         self.driver = driver
         self.actions = SeleniumActions(driver)

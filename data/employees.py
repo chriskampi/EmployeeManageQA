@@ -2,7 +2,12 @@ from functions.employee import Employee
 from time import time
 
 def qa_tester():
-
+    """
+    Create and return a QA tester employee instance.
+    
+    Returns:
+        Employee: A QA tester employee with predefined attributes
+    """
     employee = Employee()
     employee.set_user_id(5)
     employee.set_firstname("QA")
@@ -12,7 +17,12 @@ def qa_tester():
     return employee
 
 def new_user():
-
+    """
+    Create and return a new user employee instance.
+    
+    Returns:
+        Employee: A new user employee with predefined attributes
+    """
     employee = Employee()
     employee.set_user_id(3)
     employee.set_firstname("New")
@@ -22,7 +32,12 @@ def new_user():
     return employee
 
 def admin():
-
+    """
+    Create and return an admin employee instance.
+    
+    Returns:
+        Employee: An admin employee with predefined attributes including password
+    """
     employee = Employee()
     employee.set_user_id(1)
     employee.set_firstname("admin")
@@ -33,7 +48,12 @@ def admin():
     return employee
 
 def create_test_employee():
-
+    """
+    Create and return a test employee instance with a unique lastname.
+    
+    Returns:
+        Employee: A test employee with unique attributes for testing purposes
+    """
     employee = Employee()
     employee.set_firstname("Test")
     employee.set_lastname(f"Employee_{time()}")
@@ -42,7 +62,12 @@ def create_test_employee():
     return employee
 
 def create_UI_employee():
-
+    """
+    Create and return a UI test employee instance with a unique lastname.
+    
+    Returns:
+        Employee: A UI test employee with unique attributes for UI testing
+    """
     employee = Employee()
     employee.set_firstname("Test")
     employee.set_lastname(f"UI_{time()}")
@@ -51,7 +76,12 @@ def create_UI_employee():
     return employee
 
 def manager_lead_employee():
-
+    """
+    Create and return a manager lead employee instance.
+    
+    Returns:
+        Employee: A manager lead employee with predefined attributes
+    """
     employee = Employee()
     employee.set_user_id(9)
     employee.set_firstname("Manager")

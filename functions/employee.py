@@ -204,6 +204,13 @@ class Employee:
     def create_employee_via_api(self, expected_code=200, time=1):
         """
         Test the POST /createEmployee endpoint
+        
+        Args:
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/employees/createEmployee"
         payload = {
@@ -234,6 +241,14 @@ class Employee:
     def update_employee_via_api(self, user_data, expected_code=200, time=1):
         """
         Test the PUT /updateEmployee endpoint
+        
+        Args:
+            user_data: Dictionary containing the updated employee data
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/employees/updateEmployee"
         payload = {
@@ -267,6 +282,13 @@ class Employee:
     def delete_employee_via_api(self, expected_code=200, time=1):
         """
         Test the DELETE /deleteEmployee endpoint
+        
+        Args:
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/employees/deleteEmployee"
         params = {"id": self.get_user_id()}
@@ -284,6 +306,14 @@ class Employee:
     def add_skill_via_api(self, skill, expected_code=200, time=1):
         """
         Test the POST /addSkill endpoint
+        
+        Args:
+            skill: Skill object to add to the employee
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/employees/addSkill"
         payload = {
@@ -309,6 +339,14 @@ class Employee:
     def remove_skill_via_api(self, skill, expected_code=200, time=1):
         """
         Test the DELETE /removeSkill endpoint
+        
+        Args:
+            skill: Skill object to remove from the employee
+            expected_code: Expected HTTP status code (default: 200)
+            time: Request timeout in seconds (default: 1)
+            
+        Returns:
+            requests.Response: The API response object
         """
         url = f"{self.base_url}/api/employees/removeSkill"
         params = {
@@ -327,12 +365,12 @@ class Employee:
         return response
 
     def navigate_to_skills_tab(self, driver):
-        """Navigate to employees tab and verify URL"""
+        """Navigate to skills tab and verify URL"""
         skill_page = pages.navigate_to_employees_page(driver)
 
         skill_page.header.click_button_skill_tab()
 
-        # Get the expected URL from EmployeePage
+        # Get the expected URL from SkillPage
         from locators.pages.skills import SkillPage
         expected_url = SkillPage(driver).url
 
@@ -340,12 +378,12 @@ class Employee:
         assert driver.current_url == expected_url, f"Expected URL: {expected_url}, Got: {driver.current_url}"
 
     def navigate_to_login(self, driver):
-        """Navigate to employees tab and verify URL"""
+        """Navigate to login page and verify URL"""
         skill_page = pages.navigate_to_employees_page(driver)
 
         skill_page.header.click_button_logout()
 
-        # Get the expected URL from EmployeePage
+        # Get the expected URL from LoginPage
         from locators.pages.login import LoginPage
         expected_url = LoginPage(driver).url
 
@@ -353,7 +391,12 @@ class Employee:
         assert driver.current_url == expected_url, f"Expected URL: {expected_url}, Got: {driver.current_url}"
 
     def login(self, driver):
-        """login to the application"""
+        """
+        Login to the application via UI
+        
+        Args:
+            driver: Selenium WebDriver instance
+        """
         login_page = pages.navigate_to_login_page(driver)
 
         login_page.set_text_input_email(self.get_email())
@@ -361,7 +404,12 @@ class Employee:
         login_page.click_button_login()
 
     def login_fail_attempt(self, driver):
-        """login to the application"""
+        """
+        Attempt to login to the application with invalid credentials
+        
+        Args:
+            driver: Selenium WebDriver instance
+        """
         login_page = pages.navigate_to_login_page(driver)
 
         login_page.set_text_input_email(self.get_email())
