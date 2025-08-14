@@ -8,7 +8,9 @@ class EmployeePage:
     def __init__(self, driver):
         self.driver = driver
         self.actions = SeleniumActions(driver)
-        self.url = f"{load_config()['api_base_url']}/employees"
+        # Use base_url for UI navigation, not api_base_url
+        config = load_config()
+        self.url = f"{config.get('base_url', config['api_base_url'])}employees"
         self.container = Container(self.driver)
         self.skill_modal = skillModal(self.driver)
         self.header = Header(self.driver)

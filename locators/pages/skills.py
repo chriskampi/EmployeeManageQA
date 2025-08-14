@@ -7,7 +7,9 @@ class SkillPage:
     def __init__(self, driver):
         self.driver = driver
         self.actions = SeleniumActions(driver)
-        self.url = f"{load_config()['api_base_url']}/skills"
+        # Use base_url for UI navigation, not api_base_url
+        config = load_config()
+        self.url = f"{config.get('base_url', config['api_base_url'])}skills"
         self.container = Container(self.driver)
         self.header = Header(self.driver)
 

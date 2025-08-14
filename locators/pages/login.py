@@ -5,7 +5,9 @@ class LoginPage:
     def __init__(self, driver):
         self.driver = driver
         self.actions = SeleniumActions(driver)
-        self.url = f"{load_config()['api_base_url']}/login"
+        # Use base_url for UI navigation, not api_base_url
+        config = load_config()
+        self.url = f"{config.get('base_url', config['api_base_url'])}login"
 
     __input_email = f"//input[@id='email']"
     __input_password = f"//input[@id='password']"
