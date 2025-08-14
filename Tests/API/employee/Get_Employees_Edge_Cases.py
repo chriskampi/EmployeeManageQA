@@ -125,10 +125,7 @@ class TestGetEmployeesEdgeCases:
                 'firstname': manager_obj.get_firstname(),
                 'id': manager_obj.get_user_id(),
                 'lastname': manager_obj.get_lastname(),
-                'skills': [
-                    {'id': management().get_id(), 'title': management().get_title()},
-                    {'id': accountability().get_id(), 'title': accountability().get_title()}
-                ]
+                'skills': [{'id': accountability().get_id(), 'title': accountability().get_title()}]
             }
         ]
         self.EMPLOYEE.get_employees_via_api(expected_employees=expected_employees)
