@@ -1,4 +1,5 @@
 from functions.employee import Employee
+from time import time
 
 def qa_tester():
 
@@ -35,8 +36,17 @@ def create_test_employee():
 
     employee = Employee()
     employee.set_firstname("Test")
-    employee.set_lastname("Employee")
+    employee.set_lastname(f"Employee_{time()}")
     employee.set_email("ckamp.test@test.com")
+
+    return employee
+
+def create_UI_employee():
+
+    employee = Employee()
+    employee.set_firstname("Test")
+    employee.set_lastname(f"UI_{time()}")
+    employee.set_email("ckamp2.test@test.com")
 
     return employee
 

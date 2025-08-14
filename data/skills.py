@@ -1,4 +1,5 @@
 from functions.skill import Skill
+from time import time
 
 def accountability():
 
@@ -27,6 +28,13 @@ def logistics():
 def create_test_skill():
 
     skill = Skill()
-    skill.set_title("Test Skill")
+    skill.set_title(f"Test Skill_{time()}")
+
+    return skill
+
+def create_test_skill_UI():
+
+    skill = Skill()
+    skill.set_title(f"UI Skill_{time()}")
 
     return skill

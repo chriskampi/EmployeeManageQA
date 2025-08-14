@@ -141,21 +141,15 @@ class Skill:
         return response
 
     # Page Object Functions for UI Testing
-    
-    def navigate_to_skills_page(self, driver):
-        """Navigate to skills page using page object"""
-        from functions.pages import navigate_to_skills_page
-        return navigate_to_skills_page(driver)
-    
-    def create_skill_via_ui(self, driver, title=None):
+
+    def create_skill_via_ui(self, driver):
         """Create skill via UI using page object and paths"""
-        skill_page = self.navigate_to_skills_page(driver)
+        skill_page = pages.navigate_to_skills_page(driver)
         
-        # Use provided title or fall back to object title
-        title = title or self.get_title()
-        
+        skill_page.container.click_button_add_entity()
         # Fill in skill form using page object paths
-        skill_page.set_text_input_skill_title(title)
+        skill_page.set_text_input_skill_title(self.get_title())
+        skill_page.container.click_button_save_entity()
         
         return skill_page
     
