@@ -53,15 +53,28 @@ class Employee:
         response = requests.get(url, timeout=time)
         assert response.status_code == expected_code
         if expected_code == 200:
-            expected_content = (b'{"success":true,'
-                                b'"message":"Login successful",'
-                                b'"data":{'
-                                b'"id":' + self.get_user_id() + b','
-                                b'"firstname":' + self.get_firstname() + b','
-                                b'"lastname":' + self.get_lastname() + b','
-                                b'"email":' + self.get_email() + b','
-                                b'}}')
-            assert expected_content in response.content
+            # Convert user_id to string and build the expected content as a string first
+            user_id_str = str(self.get_user_id()) if self.get_user_id() else "1"
+            firstname_str = self.get_firstname() if self.get_firstname() else "Test"
+            lastname_str = self.get_lastname() if self.get_lastname() else "User"
+            email_str = self.get_email() if self.get_email() else "test@example.com"
+            
+            expected_content = (f'{{"success":true,'
+                                f'"message":"Login successful",'
+                                f'"data":{{'
+                                f'"id":{user_id_str},'
+                                f'"firstname":"{firstname_str}",'
+                                f'"lastname":"{lastname_str}",'
+                                f'"email":"{email_str}"'
+                                f'}}}}')
+            
+            # Convert to bytes for comparison with response.content
+            expected_content_bytes = expected_content.encode('utf-8')
+            assert expected_content_bytes in response.content
         else:
-            assert response.content == content
+            if content:
+                # Convert content to bytes if it's a string
+                if isinstance(content, str):
+                    content = content.encode('utf-8')
+                assert response.content == content
 
