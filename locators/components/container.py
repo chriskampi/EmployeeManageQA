@@ -14,7 +14,7 @@ class Container:
     __button_edit_entity = f"//button[contains(@class,'blue')][contains(.,'Edit')]"
     __button_delete_entity = f"//button[contains(@class,'red')][contains(.,'Delete')]"
     __input_search = f"//input[contains(@placeholder,'Search')]"
-    __tr_entity = f"//tbody/tr"
+    __tr_entity = f"//tbody/tr[./td[contains(@class,'white')]]"
     __button_save_entity = f"//div[contains(@class,'rounded')]//button[contains(@class,'blue')][@type='submit']"
 
 
@@ -56,11 +56,11 @@ class Container:
     def validate_tr_entity_row_list(self, rows):
         """Validate that the entity row list contains the expected rows"""
         # Use the basic validate_list method
-        self.actions.validate_list(f"{self.__path_tr_row_entity('')}", *rows)
+        assert self.actions.validate_list(f"{self.__path_tr_row_entity('')}", *rows)
 
     def validate_no_entity_rows(self):
         """Validate that no entity rows are found"""
-        return self.actions.validate_no_results(self.__tr_entity)
+        assert self.actions.validate_no_results(self.__tr_entity)
 
     def set_text_input_search(self, term):
         """ Path to input search """

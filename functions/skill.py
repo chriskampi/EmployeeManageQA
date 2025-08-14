@@ -182,9 +182,8 @@ class Skill:
         time.sleep(2)
         
         # For "Wrong" search, expect no results
-        if search and search.lower() == "wrong":
-            no_results = skill_page.container.validate_no_entity_rows()
-            assert no_results, f"Search for '{search}' should return no results"
+        if not expected_skills:
+            skill_page.container.validate_no_entity_rows()
         else:
             # For other searches, validate the expected skills are found
             skill_page.container.validate_tr_entity_row_list(skills_list)
