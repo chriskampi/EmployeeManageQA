@@ -382,13 +382,6 @@ class Employee:
         employee_page.set_text_input_email(self.get_email())
         employee_page.container.click_button_save_entity()
 
-    def create_employee_empty_error(self, driver):
-        """Create employee via UI using page object and paths"""
-        employee_page = pages.navigate_to_employees_page(driver)
-
-        employee_page.container.click_button_add_entity()
-        employee_page.container.click_button_save_entity()
-
     def delete_employee_via_ui(self, driver):
         """Delete employee via UI using page object and paths"""
         employee_page = pages.navigate_to_employees_page(driver)
@@ -430,16 +423,36 @@ class Employee:
         """Add skill to employee via UI using page object and paths"""
         employee_page = pages.navigate_to_employees_page(driver)
 
-        employee_page.container.click_button_edit_entity(f"{self.get_firstname()} {self.get_lastname()}")
-        employee_page.skill_modal.click_add_skill()
-        # Select the skill from the modal
+        employee_page.click_button_add_skill(f"{self.get_firstname()} {self.get_lastname()}")
         employee_page.skill_modal.click_option_skill(skill.get_title())
-        employee_page.container.click_button_save_entity()
+        employee_page.skill_modal.click_add_skill()
 
     def remove_skill_from_employee_via_ui(self, driver, skill):
         """Remove skill from employee via UI using page object and paths"""
         employee_page = pages.navigate_to_employees_page(driver)
 
-        employee_page.container.click_button_edit_entity(f"{self.get_firstname()} {self.get_lastname()}")
+        employee_page.click_button_delete_skill(f"{self.get_firstname()} {self.get_lastname()}")
+        employee_page.skill_modal.click_option_skill(skill.get_title())
         employee_page.skill_modal.click_remove_skill()
-        employee_page.container.click_button_save_entity()
+
+    def validate_skills_in_remove(self, driver, expected_skills):
+        """Remove skill from employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+
+        skills_list = [f"{skill.get_title()}" for skill in expected_skills]
+        skills_list.append("Select a skill to remove")
+        skills_list.reverse()
+
+        employee_page.click_button_delete_skill(f"{self.get_firstname()} {self.get_lastname()}")
+        employee_page.skill_modal.validate_option_skills(skills_list)
+
+    def validate_skills_in_add(self, driver, expected_skills):
+        """Remove skill from employee via UI using page object and paths"""
+        employee_page = pages.navigate_to_employees_page(driver)
+
+        skills_list = [f"{skill.get_title()}" for skill in expected_skills]
+        skills_list.append("Select a skill")
+        skills_list.reverse()
+
+        employee_page.click_button_add_skill(f"{self.get_firstname()} {self.get_lastname()}")
+        employee_page.skill_modal.validate_option_skills(skills_list)

@@ -165,13 +165,6 @@ class Skill:
         skill_page.set_text_input_skill_title(self.get_title())
         skill_page.container.click_button_save_entity()
 
-    def create_skill_empty_error(self, driver):
-        """Create skill via UI using page object and paths"""
-        skill_page = pages.navigate_to_skills_page(driver)
-
-        skill_page.container.click_button_add_entity()
-        skill_page.container.click_button_save_entity()
-
     def delete_skill_via_ui(self, driver):
         """delete skill via UI using page object and paths"""
         skill_page = pages.navigate_to_skills_page(driver)

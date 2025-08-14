@@ -1,3 +1,4 @@
+from time import sleep
 from typing import List
 from selenium.webdriver.remote.webdriver import WebDriver, WebElement
 from selenium.webdriver.common.by import By
@@ -47,6 +48,7 @@ class SeleniumActions:
         """After validating the existence of the xpath, send keys"""
         element = self.find(xpath)
         element.clear()
+        sleep(0.3)
         element.send_keys(text)
 
     def validate_list(self, xpath: str, *expected_items) -> bool:

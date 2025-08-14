@@ -18,7 +18,7 @@ class Container:
     __button_save_entity = f"//div[contains(@class,'rounded')]//button[contains(@class,'blue')][@type='submit']"
 
 
-    def __path_tr_row_entity(self, row):
+    def path_tr_row_entity(self, row):
         """ Path to row entity """
         path = f"{self.__tr_entity}[contains(.,'{row}')]"
         return path
@@ -30,12 +30,12 @@ class Container:
 
     def click_button_edit_entity(self, row):
         """ Click on edit entity button """
-        path = f"{self.__path_tr_row_entity(row)}{self.__button_edit_entity}"
+        path = f"{self.path_tr_row_entity(row)}{self.__button_edit_entity}"
         self.actions.find_and_click(path)
 
     def click_button_delete_entity(self, row):
         """ Click on delete entity button """
-        path = f"{self.__path_tr_row_entity(row)}{self.__button_delete_entity}"
+        path = f"{self.path_tr_row_entity(row)}{self.__button_delete_entity}"
         self.actions.find_and_click(path)
         alert = self.driver.switch_to.alert
         alert.accept()
@@ -50,13 +50,13 @@ class Container:
     def validate_tr_entity_row_info(self, row, info=None, exists=True):
         """ Validate row entity info """
 
-        path = f"{self.__path_tr_row_entity(row)}[contains(.,'{info}')]"
+        path = f"{self.path_tr_row_entity(row)}[contains(.,'{info}')]"
         assert self.actions.find(path, exists) == exists
 
     def validate_tr_entity_row_list(self, rows):
         """Validate that the entity row list contains the expected rows"""
         # Use the basic validate_list method
-        assert self.actions.validate_list(f"{self.__path_tr_row_entity('')}", *rows)
+        assert self.actions.validate_list(f"{self.path_tr_row_entity('')}", *rows)
 
     def validate_no_entity_rows(self):
         """Validate that no entity rows are found"""

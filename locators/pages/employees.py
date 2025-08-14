@@ -21,14 +21,14 @@ class EmployeePage:
     __input_lastname = f"//input[contains(@placeholder,'Last Name')]"
     __input_email = f"//input[contains(@placeholder,'Email')]"
 
-    def click_button_add_skill(self):
+    def click_button_add_skill(self, row):
         """ Click on add skill button """
-        path = self.__button_add_skill
+        path = f"{self.container.path_tr_row_entity(row)}{self.__button_add_skill}"
         self.actions.find_and_click(path)
 
-    def click_button_delete_skill(self):
+    def click_button_delete_skill(self, row):
         """ Click on remove skill button """
-        path = self.__button_delete_skill
+        path = f"{self.container.path_tr_row_entity(row)}{self.__button_delete_skill}"
         self.actions.find_and_click(path)
 
     def set_text_input_firstname(self, firstname):

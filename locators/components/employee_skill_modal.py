@@ -1,4 +1,5 @@
 from config.selenium_action_utils import SeleniumActions
+from time import sleep
 
 class skillModal:
     def __init__(self, driver):
@@ -30,12 +31,16 @@ class skillModal:
         """ Click on add skill button """
         path = self.path_button_action_skill("Add")
         self.actions.find_and_click(path)
+        sleep(1)
 
     def click_remove_skill(self):
         """ Click on remove skill button """
         path = self.path_button_action_skill("Remove")
         self.actions.find_and_click(path)
+        sleep(1)
 
     def validate_option_skills(self, skills):
-
-        self.actions.validate_list(self.__path_option_skill(''), skills)
+        """Validate that the skill dropdown contains the expected skills"""
+        # Get all option elements from the select dropdown
+        options_xpath = f"{self.__select_skill}//option"
+        assert self.actions.validate_list(options_xpath, *skills)
