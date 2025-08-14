@@ -30,3 +30,12 @@ def admin():
     employee.set_password("123456")
 
     return employee
+
+def create_test_employee():
+
+    employee = Employee()
+    employee.set_firstname("Test")
+    employee.set_lastname("Employee")
+    employee.set_email("test.employee@test.com")
+
+    return employee
