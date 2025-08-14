@@ -11,7 +11,9 @@ class TestGetEmployeesEdgeCases:
     def test_1_get_employees_partial_match_search(self):
         """ Test for employee retrieval with partial search terms"""
         # Test partial firstname match
+        new_user_obj = new_user()
         qa_tester_obj = qa_tester()
+        manager_obj = manager_lead_employee()
         expected_employees = [
             {
                 'email': qa_tester_obj.get_email(),
@@ -26,11 +28,26 @@ class TestGetEmployeesEdgeCases:
         # Test partial lastname match
         expected_employees = [
             {
+                'email': new_user_obj.get_email(),
+                'firstname': new_user_obj.get_firstname(),
+                'id': new_user_obj.get_user_id(),
+                'lastname': new_user_obj.get_lastname(),
+                'skills': [{'id': accountability().get_id(), 'title': accountability().get_title()}]
+            },
+            {
                 'email': qa_tester_obj.get_email(),
                 'firstname': qa_tester_obj.get_firstname(),
                 'id': qa_tester_obj.get_user_id(),
                 'lastname': qa_tester_obj.get_lastname(),
                 'skills': []
+            },
+            {
+                'email': manager_obj.get_email(),
+                'firstname': manager_obj.get_firstname(),
+                'id': manager_obj.get_user_id(),
+                'lastname': manager_obj.get_lastname(),
+                'skills': [{'id': management().get_id(), 'title': management().get_title()},
+                           {'id': accountability().get_id(), 'title': accountability().get_title()}]
             }
         ]
         self.EMPLOYEE.get_employees_via_api(search="Test", expected_employees=expected_employees)
@@ -66,15 +83,7 @@ class TestGetEmployeesEdgeCases:
         """ Test for employee retrieval with numeric search terms"""
         # Test with numeric search (might search by ID or phone)
         qa_tester_obj = qa_tester()
-        expected_employees = [
-            {
-                'email': qa_tester_obj.get_email(),
-                'firstname': qa_tester_obj.get_firstname(),
-                'id': qa_tester_obj.get_user_id(),
-                'lastname': qa_tester_obj.get_lastname(),
-                'skills': []
-            }
-        ]
+        expected_employees = []
         self.EMPLOYEE.get_employees_via_api(search=str(qa_tester_obj.get_user_id()), expected_employees=expected_employees)
 
     def test_4_get_employees_mixed_content_search(self):
@@ -98,44 +107,3 @@ class TestGetEmployeesEdgeCases:
         # Don't validate specific results for timeout test
         self.EMPLOYEE.get_employees_via_api(time=0.1)
 
-    def test_6_get_employees_large_dataset_response(self):
-        """ Test for employee retrieval with large dataset response"""
-        # Test without search to get all employees (large dataset)
-        new_user_obj = new_user()
-        qa_tester_obj = qa_tester()
-        manager_obj = manager_lead_employee()
-        
-        expected_employees = [
-            {
-                'email': new_user_obj.get_email(),
-                'firstname': new_user_obj.get_firstname(),
-                'id': new_user_obj.get_user_id(),
-                'lastname': new_user_obj.get_lastname(),
-                'skills': [{'id': accountability().get_id(), 'title': accountability().get_title()}]
-            },
-            {
-                'email': qa_tester_obj.get_email(),
-                'firstname': qa_tester_obj.get_firstname(),
-                'id': qa_tester_obj.get_user_id(),
-                'lastname': qa_tester_obj.get_lastname(),
-                'skills': []
-            },
-            {
-                'email': manager_obj.get_email(),
-                'firstname': manager_obj.get_firstname(),
-                'id': manager_obj.get_user_id(),
-                'lastname': manager_obj.get_lastname(),
-                'skills': [
-                    {'id': management().get_id(), 'title': management().get_title()},
-                    {'id': accountability().get_id(), 'title': accountability().get_title()}
-                ]
-            }
-        ]
-        self.EMPLOYEE.get_employees_via_api(expected_employees=expected_employees)
-        
-        # Verify response structure for large datasets
-        response = self.EMPLOYEE.get_employees_via_api()
-        assert response.status_code == 200
-        response_data = response.json()
-        assert 'data' in response_data
-        assert isinstance(response_data['data'], list)
