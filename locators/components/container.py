@@ -1,3 +1,5 @@
+import time
+
 from config.selenium_action_utils import SeleniumActions
 
 
@@ -35,11 +37,15 @@ class Container:
         """ Click on delete entity button """
         path = f"{self.__path_tr_row_entity(row)}{self.__button_delete_entity}"
         self.actions.find_and_click(path)
+        alert = self.driver.switch_to.alert
+        alert.accept()
+        time.sleep(1)
 
     def click_button_save_entity(self):
         """ Click on delete entity button """
         path = f"{self.__button_save_entity}"
         self.actions.find_and_click(path)
+        time.sleep(1)
 
     def validate_tr_entity_row_info(self, row, info):
         """ Validate row entity info """

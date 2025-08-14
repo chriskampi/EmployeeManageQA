@@ -2,6 +2,7 @@ import requests
 import conftest
 from conftest import load_config
 from functions import pages
+import time
 
 class Skill:
     def __init__(self, id=None, title=None):
@@ -156,8 +157,3 @@ class Skill:
         skill_page = pages.navigate_to_skills_page(driver)
 
         skill_page.container.click_button_delete_entity(self.get_title())
-        # Handle the confirmation alert
-        alert = driver.switch_to.alert
-        alert.accept()
-        
-        return skill_page
