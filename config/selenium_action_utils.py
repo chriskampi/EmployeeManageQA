@@ -13,11 +13,24 @@ class SeleniumActions:
         """Open a URL in the browser"""
         self.driver.get(url)
 
-    def find(self, xpath: str) -> WebElement:
-        """Validate the existence of an xpath and return the element"""
+    def find(self, xpath: str, exists: bool = True) -> WebElement | bool:
+        """
+        Validate the existence of an xpath and optionally return the element
+        
+        Args:
+            xpath: The XPath to find
+            exists: If True, return the element. If False, just validate existence and return True/False
+            
+        Returns:
+            WebElement if exists=True, bool if exists=False
+        """
         wait = WebDriverWait(self.driver, self.wait_seconds)
         element = wait.until(EC.presence_of_element_located((By.XPATH, xpath)))
-        return element
+        
+        if exists:
+            return element
+        else:
+            return True
 
     def find_and_click(self, xpath: str) -> None:
         """After validating the existence of the xpath, click it"""
