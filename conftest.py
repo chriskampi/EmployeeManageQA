@@ -46,16 +46,43 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 def config(request: pytest.FixtureRequest) -> dict:
     cfg_path = request.config.getoption("config_path")
     cfg = load_config(cfg_path)
+    
+    # Get override mode from CLI or environment
     override_mode = request.config.getoption("override_mode") or os.environ.get("TEST_MODE")
     if override_mode:
         cfg["test_mode"] = str(override_mode).lower()
+    
     return cfg
 
-@pytest.fixture(scope="session")
-def is_ui(config: dict) -> bool:
-    return str(config.get("test_mode", "api")).lower() == "ui"
+@pytest.fixture
+def is_ui(config: dict, request: pytest.FixtureRequest) -> bool:
+    # Check if we're in UI mode from config
+    config_mode = str(config.get("test_mode", "api")).lower()
+    
+    # Check for auto-detected mode from pytest_runtest_setup
+    auto_detected_mode = getattr(request.config.option, 'override_mode', None)
+    if auto_detected_mode:
+        return str(auto_detected_mode).lower() == "ui"
+    
+    # Check for manual override mode
+    override_mode = request.config.getoption("override_mode")
+    if override_mode:
+        return str(override_mode).lower() == "ui"
+    
+    # Auto-detect mode based on test file location if no override is specified
+    test_file_path = str(request.node.fspath) if hasattr(request.node, 'fspath') else ""
+    
+    # Normalize path separators for cross-platform compatibility
+    normalized_path = test_file_path.replace('\\', '/')
+    
+    if "Tests/UI" in normalized_path:
+        return True
+    elif "Tests/API" in normalized_path:
+        return False
+    
+    return config_mode == "ui"
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def driver(config: dict, is_ui: bool):
     if not is_ui:
         # In API mode, no browser is started; UI tests will be skipped in their fixtures/tests.
@@ -126,12 +153,15 @@ def pytest_runtest_setup(item: pytest.Item) -> None:
     # Resolve mode for current run
     override = item.config.getoption("override_mode")
     cfg_path = item.config.getoption("config_path")
-    mode = (override or load_config(cfg_path).get("test_mode", "api")).lower()
-
-    is_ui_test = any(mark.name == "ui" for mark in item.iter_markers())
-    is_api_test = any(mark.name == "api" for mark in item.iter_markers())
-
-    if mode == "api" and is_ui_test:
-        pytest.skip("Skipping UI test in API mode")
-    if mode == "ui" and is_api_test:
-        pytest.skip("Skipping API test in UI mode")
+    
+    # Auto-detect mode based on test file location if no override is specified
+    if not override:
+        test_file_path = str(item.fspath)
+        if "Tests/UI" in test_file_path:
+            override = "ui"
+        elif "Tests/API" in test_file_path:
+            override = "api"
+    
+    # Store the detected mode in the config for fixtures to use
+    if override:
+        item.config.option.override_mode = override
