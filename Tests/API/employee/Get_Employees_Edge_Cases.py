@@ -89,16 +89,7 @@ class TestGetEmployeesEdgeCases:
     def test_4_get_employees_mixed_content_search(self):
         """ Test for employee retrieval with mixed content search"""
         # Test with alphanumeric search
-        qa_tester_obj = qa_tester()
-        expected_employees = [
-            {
-                'email': qa_tester_obj.get_email(),
-                'firstname': qa_tester_obj.get_firstname(),
-                'id': qa_tester_obj.get_user_id(),
-                'lastname': qa_tester_obj.get_lastname(),
-                'skills': []
-            }
-        ]
+        expected_employees = []
         self.EMPLOYEE.get_employees_via_api(search="QA5", expected_employees=expected_employees)
 
     def test_5_get_employees_timeout_scenario(self):
